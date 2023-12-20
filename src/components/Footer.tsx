@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 import { Link } from 'react-router-dom';
-import githubIcon from '../assets/icon-github.svg';
+import IconGithub from '../assets/icons/github.svg?react';
 
 function Footer(): JSX.Element {
   return (
@@ -16,8 +16,12 @@ function Footer(): JSX.Element {
             Alex Negodiaev
           </Link>
         </p>
-        <Link to="https://github.com/Negodiaev" target="_blank">
-          <img src={githubIcon} width={20} className="dark:invert" alt="Github icon" />
+        <Link
+          to="https://github.com/Negodiaev"
+          target="_blank"
+          className="transition-colors hover:text-gray-600 dark:hover:text-gray-300"
+        >
+          <IconGithub className="w-5 h-5" />
         </Link>
       </div>
     </footer>

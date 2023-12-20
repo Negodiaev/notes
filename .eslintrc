@@ -6,7 +6,7 @@
   "extends": ["eslint:recommended", "plugin:import/recommended", "plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {
     "no-unused-vars": "off",
-    "import/no-unresolved": [2, { "ignore": ["\\.(jpe?g|png|svg|gif)$"] }],
+    "import/no-unresolved": [2, { "ignore": ["\\.(jpe?g|png|svg\\?react$|gif)$"] }],
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
