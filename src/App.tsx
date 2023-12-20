@@ -6,9 +6,9 @@ import Footer from './components/Footer.tsx';
 
 function App(): JSX.Element {
   return (
-    <div className="grid grid-rows-[auto,1fr,auto] min-h-screen bg-white dark:bg-gray-800">
-      <Header />
-      <main className="px-4 bg-white dark:bg-gray-900">
+    <div className="grid grid-rows-[1fr,auto] min-h-[100dvh] bg-white dark:bg-gray-800">
+      <Header className="fixed top-0 left-0 right-0 z-[2] shadow-xl" />
+      <main className="px-4 pt-[56px] bg-white dark:bg-gray-900">
         <Outlet />
       </main>
       <Footer />

@@ -62,7 +62,7 @@ function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps)
   }
 
   return (
-    <div className="fixed top-1/2 left-1/2 z-[1] p-4 xs:p-6 w-[500px] max-w-[calc(100%-32px)] min-h-[300px] max-h-full rounded-xl bg-gray-200 dark:bg-gray-700 -translate-y-1/2 -translate-x-1/2">
+    <div className="fixed top-1/2 left-1/2 z-[3] p-4 xs:p-6 w-[500px] max-w-[calc(100%-32px)] min-h-[300px] max-h-full rounded-xl bg-gray-200 dark:bg-gray-700 -translate-y-1/2 -translate-x-1/2">
       <h2 className="mb-4 text-xl font-medium text-center">{title}</h2>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
