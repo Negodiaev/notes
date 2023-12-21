@@ -10,7 +10,7 @@ import { PageUrn } from '../types/nav.ts';
 import Heading from '../components/UI/Heading.tsx';
 import Subheading from '../components/UI/Subheading.tsx';
 import NotesGrid from '../components/NotesGrid.tsx';
-import Note from '../components/Note.tsx';
+import Note from '../components/UI/Note/Note.tsx';
 import Tabs from '../components/UI/Tabs/Tabs.tsx';
 import Search from '../components/UI/Search.tsx';
 
