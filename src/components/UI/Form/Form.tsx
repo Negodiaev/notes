@@ -1,11 +1,13 @@
-import { ChangeEvent, FormEvent, JSX, useId, useState, useMemo } from 'react';
+import { FormEvent, JSX, useId, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import useCategoryOptions from '../../../hooks/useCategoryOptions.ts';
+import { useTextField } from '../../../hooks/useTextField.ts';
 import { Category } from '../../../types/note.ts';
-import { TFormData } from '../../../types/form.ts';
+import { FormFieldType, TFormData } from '../../../types/form.ts';
 import Button from '../Button.tsx';
 import Select from './Select.tsx';
+import ButtonLoader from './ButtonLoader.tsx';
 
 interface IFormProps {
   title: string;
@@ -17,48 +19,35 @@ interface IFormProps {
 }
 
 const FIELD_STYLES = 'px-4 py-2 rounded-md dark:text-gray-900';
-const NAME_LENGTH: number = 3;
-const TEXT_LENGTH: number = 5;
-
-const initialData: TFormData = { name: '', text: '', category: Category.Personal };
 
 function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps): JSX.Element {
   const id = useId();
   const categoryOptions = useCategoryOptions();
-  const [data, setData] = useState<TFormData>(formData || initialData);
-  const [error, setError] = useState<string | null>(null);
+  const [name, handleChangeName, isNameError] = useTextField(formData?.name || '', FormFieldType.Text);
+  const [text, handleChangeText, isTextError] = useTextField(formData?.text || '', FormFieldType.Textarea);
+  const [category, setCategory] = useState<Category>(formData?.category || Category.Personal);
+
+  const error: string | null = useMemo(() => {
+    if (isNameError) {
+      return "Text's length must be at least 3 symbols";
+    } else if (isTextError) {
+      return "Name's length must be at least 5 symbols";
+    } else {
+      return null;
+    }
+  }, [isNameError, isTextError]);
 
   const isDisabled: boolean = useMemo(() => {
-    return Boolean(error || !data.name.trim() || !data.text.trim() || isLoading);
-  }, [error, data.name, data.text, isLoading]);
-
-  function handleChangeName({ target: { value } }: ChangeEvent<HTMLInputElement>): void {
-    setData(prevState => ({ ...prevState, name: value }));
-
-    if (value.trim().length < NAME_LENGTH) {
-      setError(`Title's length must be at least ${NAME_LENGTH} symbols`);
-    } else {
-      setError(null);
-    }
-  }
-
-  function handleChangeText({ target: { value } }: ChangeEvent<HTMLTextAreaElement>): void {
-    setData(prevState => ({ ...prevState, text: value }));
-
-    if (value.trim().length < TEXT_LENGTH) {
-      setError(`Text's length must be at least ${TEXT_LENGTH} symbols`);
-    } else {
-      setError(null);
-    }
-  }
+    return Boolean(error) || isLoading;
+  }, [error, isLoading]);
 
   function handleChangeCategory(category: Category): void {
-    setData(prevState => ({ ...prevState, category }));
+    setCategory(category);
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    onSubmit(data).then(afterSubmit);
+    onSubmit({ ...formData, name: name, text: text, category }).then(afterSubmit);
   }
 
   return (
@@ -68,33 +57,27 @@ function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps)
         <input
           type="text"
           name={`note-name-${id}`}
-          value={data.name}
+          value={name}
           placeholder="Title"
           className={FIELD_STYLES}
           onChange={handleChangeName}
         />
         <textarea
           name={`note-text-${id}`}
-          value={data.text}
+          value={text}
           placeholder="Text"
           className={clsx('resize-none overflow-y-auto min-h-[200px]', FIELD_STYLES)}
           onChange={handleChangeText}
         />
         <Select<Category>
           options={categoryOptions}
-          selected={data.category}
+          selected={category}
           fieldStyles={FIELD_STYLES}
           onChange={handleChangeCategory}
         />
         {error && <p className="text-sm text-rose-500 dark:text-red-500">{error}</p>}
         <Button type="submit" disabled={isDisabled}>
-          {isLoading ? (
-            <div className="flex justify-center gap-4">
-              <span className="w-6 h-6 border-2 border-r-0 rounded-full animate-spin" /> Loading...
-            </div>
-          ) : (
-            'Save'
-          )}
+          <ButtonLoader isLoading={isLoading} />
         </Button>
       </form>
     </div>

@@ -1,5 +1,10 @@
 import { INote } from './note.ts';
 
+export enum FormFieldType {
+  Text = 'text',
+  Textarea = 'textarea',
+}
+
 export interface ISelectOption<T extends string> {
   label: string;
   value: T;
