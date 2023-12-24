@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import IconGithub from '../assets/icons/github.svg?react';
 
-function Footer(): JSX.Element {
+export function Footer(): JSX.Element {
   return (
     <footer className="p-4 bg-gray-100 dark:bg-gray-950">
       <div className="container flex justify-between items-center">
@@ -27,5 +27,3 @@ function Footer(): JSX.Element {
     </footer>
   );
 }
-
-export default Footer;

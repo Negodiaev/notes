@@ -7,6 +7,6 @@ const categoryOptions: ISelectOption<Category>[] = [
   { label: 'Home', value: Category.Home },
 ];
 
-export default function useCategoryOptions(): ISelectOption<Category>[] {
+export function useCategoryOptions(): ISelectOption<Category>[] {
   return categoryOptions;
 }

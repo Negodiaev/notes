@@ -1,5 +1,5 @@
 import { ChangeEvent, JSX, useId } from 'react';
-import IconButton from '../IconButton.tsx';
+import { IconButton } from '../IconButton.tsx';
 
 import IconCheckCircle from '../../../assets/icons/check-circle.svg?react';
 import IconArrowLeftStartOnRectangle from '../../../assets/icons/arrow-left-start-on-rectangle.svg?react';
@@ -8,12 +8,12 @@ import IconTrash from '../../../assets/icons/trash.svg?react';
 
 interface INoteActionsProps {
   isCompleted: boolean;
-  onComplete: (event: ChangeEvent<HTMLInputElement>) => void;
+  onToggleComplete: (event: ChangeEvent<HTMLInputElement>) => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export function NoteActions({ isCompleted, onComplete, onEdit, onDelete }: INoteActionsProps): JSX.Element {
+export function NoteActions({ isCompleted, onToggleComplete, onEdit, onDelete }: INoteActionsProps): JSX.Element {
   const completedId = useId();
 
   return (
@@ -23,7 +23,7 @@ export function NoteActions({ isCompleted, onComplete, onEdit, onDelete }: INote
         id={`completed-${completedId}`}
         checked={isCompleted}
         className="hidden"
-        onChange={onComplete}
+        onChange={onToggleComplete}
       />
       <label
         htmlFor={`completed-${completedId}`}

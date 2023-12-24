@@ -1,90 +1,33 @@
-import { JSX, useCallback, useMemo, useState } from 'react';
+import { JSX, useContext, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import useNotes from '../hooks/useNotes.ts';
-import useTabs from '../hooks/useTabs.ts';
-
+import { NotesContext } from '../context/NotesContext.ts';
+import { useTabs } from '../hooks/useTabs.ts';
+import { useFilterNotes } from '../hooks/useFilterNotes.ts';
+import { useSelectedCategories } from '../hooks/useSelectCategories.ts';
+import { useSearch } from '../hooks/useSearch.ts';
 import { Category, INote } from '../types/note.ts';
 import { PageUrn } from '../types/nav.ts';
-
-import Heading from '../components/UI/Heading.tsx';
-import Subheading from '../components/UI/Subheading.tsx';
-import NotesGrid from '../components/NotesGrid.tsx';
-import Note from '../components/UI/Note/Note.tsx';
-import Tabs from '../components/UI/Tabs/Tabs.tsx';
-import Search from '../components/UI/Search.tsx';
+import { Heading } from '../components/UI/Heading.tsx';
+import { Subheading } from '../components/UI/Subheading.tsx';
+import { NotesGrid } from '../components/NotesGrid.tsx';
+import { Tabs } from '../components/UI/Tabs/Tabs.tsx';
+import { Search } from '../components/UI/Search.tsx';
 
 function CompletedNotes(): JSX.Element {
-  const [notes, setNotes] = useState<INote[]>(useNotes());
+  const { notes } = useContext(NotesContext);
   const tabs = useTabs();
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [searchText, setSearchText] = useState<string>('');
-
+  const [selectedCategories, handleChangeCategories, resetSelectedCategories] = useSelectedCategories();
+  const [searchValue, handleSearch] = useSearch();
   const completedNotes: INote[] = useMemo(() => {
     return notes.filter(({ isCompleted }) => isCompleted);
   }, [notes]);
-
-  const filteredNotes: INote[] = useMemo(() => {
-    if (selectedCategories.length && searchText) {
-      return completedNotes.filter(({ category, name, text }) =>
-        selectedCategories.some(
-          selectedCategory =>
-            selectedCategory === category &&
-            (name.toLowerCase().includes(searchText.toLowerCase()) ||
-              text.toLowerCase().includes(searchText.toLowerCase())),
-        ),
-      );
-    } else if (selectedCategories.length) {
-      return completedNotes.filter(({ category }) =>
-        selectedCategories.some(selectedCategory => selectedCategory === category),
-      );
-    } else if (searchText) {
-      return completedNotes.filter(
-        ({ name, text }) =>
-          name.toLowerCase().includes(searchText.toLowerCase()) ||
-          text.toLowerCase().includes(searchText.toLowerCase()),
-      );
-    } else {
-      return completedNotes;
-    }
-  }, [selectedCategories, completedNotes, searchText]);
-
-  function handleSearch(searchText: string): void {
-    setSearchText(searchText);
-  }
-
-  function handleChangeTabs(value: Category, isSelected: boolean): void {
-    setSelectedCategories(prevState => {
-      if (isSelected) {
-        return [...prevState, value];
-      } else {
-        return [...prevState].filter(val => val !== value);
-      }
-    });
-  }
+  const filteredNotes = useFilterNotes(completedNotes, selectedCategories, searchValue);
 
   function handleClearFilters(): void {
-    setSelectedCategories([]);
-    setSearchText('');
+    resetSelectedCategories();
+    handleSearch('');
   }
-
-  const handleDelete = useCallback(
-    (note: INote): void => {
-      const filteredNotes = notes.filter(({ id }) => id !== note.id);
-      localStorage.setItem('notes', JSON.stringify(filteredNotes));
-      setNotes(filteredNotes);
-    },
-    [notes],
-  );
-
-  const handleRestore = useCallback(
-    (restoredNote: INote): void => {
-      const newNotes = notes.map(note => (note.id !== restoredNote.id ? note : restoredNote));
-      localStorage.setItem('notes', JSON.stringify(newNotes));
-      setNotes(newNotes);
-    },
-    [notes],
-  );
 
   return (
     <>
@@ -109,20 +52,14 @@ function CompletedNotes(): JSX.Element {
           {completedNotes.length > 0 && (
             <div className="flex flex-col sm:flex-row-reverse sm:justify-between lg:justify-start items-center sm:items-center gap-4 lg:gap-6 mb-2">
               <div className="flex flex-col lg:justify-start items-center gap-6 xs:gap-3 lg:gap-6 w-full sm:w-auto">
-                <Tabs<Category> tabs={tabs} selectedCategories={selectedCategories} onChange={handleChangeTabs} />
+                <Tabs<Category> tabs={tabs} selectedCategories={selectedCategories} onChange={handleChangeCategories} />
               </div>
-              <Search value={searchText} onSearch={handleSearch} />
+              <Search value={searchValue} onSearch={handleSearch} />
             </div>
           )}
 
           {filteredNotes.length > 0 ? (
-            <>
-              <NotesGrid>
-                {filteredNotes.map(note => (
-                  <Note note={note} onComplete={handleRestore} onDelete={handleDelete} key={note.id} />
-                ))}
-              </NotesGrid>
-            </>
+            <NotesGrid notes={filteredNotes} />
           ) : (
             completedNotes.length > 0 && (
               <div className="text-center">

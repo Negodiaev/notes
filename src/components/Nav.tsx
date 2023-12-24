@@ -1,9 +1,9 @@
 import { JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
-import useNavItems from '../hooks/useNavItems.ts';
+import { useNavItems } from '../hooks/useNavItems.ts';
 
-function Nav(): JSX.Element {
+export function Nav(): JSX.Element {
   const navItems = useNavItems();
 
   return (
@@ -28,5 +28,3 @@ function Nav(): JSX.Element {
     </nav>
   );
 }
-
-export default Nav;

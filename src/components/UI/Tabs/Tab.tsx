@@ -9,7 +9,12 @@ interface ITabProps<T extends string> {
   onChange: (value: T, isSelected: boolean) => void;
 }
 
-function Tab<T extends string>({ tab: { name, value }, isSelected, className, onChange }: ITabProps<T>): JSX.Element {
+export function Tab<T extends string>({
+  tab: { name, value },
+  isSelected,
+  className,
+  onChange,
+}: ITabProps<T>): JSX.Element {
   const id = useId();
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -41,5 +46,3 @@ function Tab<T extends string>({ tab: { name, value }, isSelected, className, on
     </li>
   );
 }
-
-export default Tab;

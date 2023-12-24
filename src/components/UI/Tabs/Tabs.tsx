@@ -1,7 +1,7 @@
 import React, { JSX } from 'react';
 import { ITab } from '../../../types/tabs.ts';
 import { Category } from '../../../types/note.ts';
-import Tab from './Tab.tsx';
+import { Tab } from './Tab.tsx';
 
 const bgColors: Record<Category, string> = {
   [Category.Personal]: 'peer-checked/tab:bg-amber-200',
@@ -9,13 +9,13 @@ const bgColors: Record<Category, string> = {
   [Category.Home]: 'peer-checked/tab:bg-green-200',
 };
 
-interface ITabsProps<T extends string> {
+export interface ITabsProps<T extends string> {
   tabs: ITab<T>[];
   selectedCategories: T[];
   onChange: (value: T, isSelected: boolean) => void;
 }
 
-function Tabs<T extends string>({ tabs, selectedCategories, onChange }: ITabsProps<T>): JSX.Element | null {
+export function Tabs<T extends string>({ tabs, selectedCategories, onChange }: ITabsProps<T>): JSX.Element | null {
   if (!tabs.length) {
     return null;
   }
@@ -34,5 +34,3 @@ function Tabs<T extends string>({ tabs, selectedCategories, onChange }: ITabsPro
     </ul>
   );
 }
-
-export default Tabs;

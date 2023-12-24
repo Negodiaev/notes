@@ -5,7 +5,7 @@ interface IModalProps extends PropsWithChildren {
   onClose: () => void;
 }
 
-function Modal({ isShow, children, onClose }: IModalProps): JSX.Element | null {
+export function Modal({ isShow, children, onClose }: IModalProps): JSX.Element | null {
   useEffect(() => {
     if (isShow) {
       document.body.classList.add('overflow-hidden');
@@ -22,7 +22,7 @@ function Modal({ isShow, children, onClose }: IModalProps): JSX.Element | null {
     <>
       <div
         className="fixed left-0 right-0 top-0 bottom-0 z-[3] bg-gray-950 bg-opacity-80 backdrop:bg-gray-50"
-        onClick={() => onClose()}
+        onClick={onClose}
       >
         <button className="absolute top-4 right-4 text-xl font-bold text-gray-200">╳</button>
       </div>
@@ -30,5 +30,3 @@ function Modal({ isShow, children, onClose }: IModalProps): JSX.Element | null {
     </>
   );
 }
-
-export default Modal;

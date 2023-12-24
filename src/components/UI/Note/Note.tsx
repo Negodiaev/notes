@@ -2,7 +2,7 @@ import { ChangeEvent, JSX, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { formatDate } from '../../../utils/formatDate.ts';
-import { Category, INote } from '../../../types/note.ts';
+import { Category, INote, TNoteCompleted, TNoteId } from '../../../types/note.ts';
 import { NoteActions } from './NoteActions.tsx';
 
 const bgCategoryColors: Record<Category, string> = {
@@ -13,20 +13,20 @@ const bgCategoryColors: Record<Category, string> = {
 
 export interface INoteProps {
   note: INote;
-  onComplete: (note: INote) => void;
+  onToggleComplete: (id: TNoteId, isCompleted: TNoteCompleted) => void;
+  onDelete: (id: TNoteId) => void;
   onEdit?: (note: INote) => void;
-  onDelete: (note: INote) => void;
 }
 
-function Note({ note, onComplete, onEdit, onDelete }: INoteProps): JSX.Element {
-  const { name, text, category, date, isCompleted } = note;
+export function Note({ note, onToggleComplete, onEdit, onDelete }: INoteProps): JSX.Element {
+  const { id, name, text, category, date, isCompleted } = note;
   const bgCategoryColor = useMemo(() => bgCategoryColors[category], [category]);
 
-  const handleComplete = useCallback(
+  const handleToggleComplete = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      onComplete({ ...note, isCompleted: event.target.checked });
+      onToggleComplete(id, event.target.checked);
     },
-    [note, onComplete],
+    [id, onToggleComplete],
   );
 
   function handleEdit(): void {
@@ -34,7 +34,7 @@ function Note({ note, onComplete, onEdit, onDelete }: INoteProps): JSX.Element {
   }
 
   function handleDelete(): void {
-    onDelete(note);
+    onDelete(id);
   }
 
   return (
@@ -54,7 +54,7 @@ function Note({ note, onComplete, onEdit, onDelete }: INoteProps): JSX.Element {
         </div>
         <NoteActions
           isCompleted={isCompleted}
-          onComplete={handleComplete}
+          onToggleComplete={handleToggleComplete}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />
@@ -67,5 +67,3 @@ function Note({ note, onComplete, onEdit, onDelete }: INoteProps): JSX.Element {
     </div>
   );
 }
-
-export default Note;

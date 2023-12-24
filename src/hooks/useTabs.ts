@@ -7,6 +7,6 @@ const tabs: ITab<Category>[] = [
   { name: 'Home', value: Category.Home },
 ];
 
-export default function useTabs(): ITab<Category>[] {
+export function useTabs(): ITab<Category>[] {
   return tabs;
 }

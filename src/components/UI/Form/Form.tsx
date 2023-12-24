@@ -1,18 +1,18 @@
 import { FormEvent, JSX, useId, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
-import useCategoryOptions from '../../../hooks/useCategoryOptions.ts';
+import { useCategoryOptions } from '../../../hooks/useCategoryOptions.ts';
 import { useTextField } from '../../../hooks/useTextField.ts';
 import { Category } from '../../../types/note.ts';
 import { FormFieldType, TFormData } from '../../../types/form.ts';
-import Button from '../Button.tsx';
-import Select from './Select.tsx';
-import ButtonLoader from './ButtonLoader.tsx';
+import { Button } from '../Button.tsx';
+import { Select } from './Select.tsx';
+import { ButtonLoader } from './ButtonLoader.tsx';
 
 interface IFormProps {
   title: string;
-  formData?: TFormData | null;
   isLoading: boolean;
+  formData?: TFormData | null;
   className?: string;
   onSubmit: (formData: TFormData) => Promise<void>;
   afterSubmit: () => void;
@@ -20,7 +20,7 @@ interface IFormProps {
 
 const FIELD_STYLES = 'px-4 py-2 rounded-md dark:text-gray-900';
 
-function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps): JSX.Element {
+export function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps): JSX.Element {
   const id = useId();
   const categoryOptions = useCategoryOptions();
   const [name, handleChangeName, isNameError] = useTextField(formData?.name || '', FormFieldType.Text);
@@ -47,7 +47,7 @@ function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    onSubmit({ ...formData, name: name, text: text, category }).then(afterSubmit);
+    onSubmit({ ...formData, name, text, category }).then(afterSubmit);
   }
 
   return (
@@ -83,5 +83,3 @@ function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFormProps)
     </div>
   );
 }
-
-export default Form;

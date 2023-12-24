@@ -6,7 +6,7 @@ interface ISearchProps {
   onSearch: (value: string) => void;
 }
 
-function Search({ value, onSearch }: ISearchProps): JSX.Element {
+export function Search({ value, onSearch }: ISearchProps): JSX.Element {
   const id: string = useId();
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -32,5 +32,3 @@ function Search({ value, onSearch }: ISearchProps): JSX.Element {
     </div>
   );
 }
-
-export default Search;

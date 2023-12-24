@@ -1,6 +1,6 @@
 import { INavItem, PageUrn } from '../types/nav.ts';
 
-export default function useNavItems(): INavItem[] {
+export function useNavItems(): INavItem[] {
   return [
     { name: 'Home', urn: PageUrn.Home },
     { name: 'Actual notes', urn: PageUrn.Notes },

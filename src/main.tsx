@@ -5,7 +5,7 @@ import './index.css';
 
 import { PageUrn } from './types/nav.ts';
 import Home from './pages/Home.tsx';
-import Notes from './pages/Notes.tsx';
+import Notes from './pages/Notes/Notes.tsx';
 import CompletedNotes from './pages/CompletedNotes.tsx';
 import App from './App.tsx';
 

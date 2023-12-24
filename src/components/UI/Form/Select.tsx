@@ -8,7 +8,12 @@ interface ISelectProps<T extends string> {
   onChange: (value: T) => void;
 }
 
-function Select<T extends string>({ options, selected, fieldStyles = '', onChange }: ISelectProps<T>): JSX.Element {
+export function Select<T extends string>({
+  options,
+  selected,
+  fieldStyles = '',
+  onChange,
+}: ISelectProps<T>): JSX.Element {
   function handleChange(event: ChangeEvent<HTMLSelectElement>): void {
     onChange(event.target.value as T);
   }
@@ -23,5 +28,3 @@ function Select<T extends string>({ options, selected, fieldStyles = '', onChang
     </select>
   );
 }
-
-export default Select;

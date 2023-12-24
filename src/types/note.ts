@@ -12,3 +12,6 @@ export enum Category {
   Business = 'Business',
   Home = 'Home',
 }
+
+export type TNoteId = INote['id'];
+export type TNoteCompleted = INote['isCompleted'];

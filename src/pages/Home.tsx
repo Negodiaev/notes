@@ -1,48 +1,23 @@
-import { JSX, useState } from 'react';
+import { JSX, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useNotes from '../hooks/useNotes.ts';
+import { NotesContext } from '../context/NotesContext.ts';
+import { useAddNote } from '../hooks/useAddNote.ts';
 import { PageUrn } from '../types/nav.ts';
-import { INote } from '../types/note.ts';
-import { TFormData } from '../types/form.ts';
-import Heading from '../components/UI/Heading.tsx';
-import Subheading from '../components/UI/Subheading.tsx';
-import Button from '../components/UI/Button.tsx';
-import Modal from '../components/UI/Modal.tsx';
-import Form from '../components/UI/Form/Form.tsx';
+import { Heading } from '../components/UI/Heading.tsx';
+import { Subheading } from '../components/UI/Subheading.tsx';
+import { Button } from '../components/UI/Button.tsx';
+import { Modal } from '../components/UI/Modal.tsx';
+import { Form } from '../components/UI/Form/Form.tsx';
 
 function Home(): JSX.Element {
   const navigate = useNavigate();
-  const notes = useNotes();
   const [isModalShow, setModalShow] = useState<boolean>(false);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const { isLoading } = useContext(NotesContext);
+  const addNote = useAddNote(1000);
 
   function handleToggleModal(): void {
     setModalShow(prevState => !prevState);
-  }
-
-  function handleAddNote(formData: TFormData): Promise<void> {
-    setLoading(prevState => !prevState);
-
-    return new Promise(resolve => {
-      setTimeout(() => {
-        localStorage.setItem(
-          'notes',
-          JSON.stringify([
-            {
-              ...formData,
-              id: String(Number(notes.length ? notes[0].id : 0) + 1),
-              date: new Date().toISOString(),
-              isCompleted: false,
-            },
-            ...notes,
-          ] as INote[]),
-        );
-
-        setLoading(prevState => !prevState);
-        resolve();
-      }, 1000);
-    });
   }
 
   function handleAfterSubmit(): void {
@@ -58,7 +33,7 @@ function Home(): JSX.Element {
       </div>
       <Button onClick={handleToggleModal}>Add a note</Button>
       <Modal isShow={isModalShow} onClose={handleToggleModal}>
-        <Form title="Add a new note" isLoading={isLoading} onSubmit={handleAddNote} afterSubmit={handleAfterSubmit} />
+        <Form title="Add a new note" isLoading={isLoading} onSubmit={addNote} afterSubmit={handleAfterSubmit} />
       </Modal>
     </div>
   );
