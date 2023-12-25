@@ -7,7 +7,7 @@ import { Category } from '../../../types/note.ts';
 import { FormFieldType, TFormData } from '../../../types/form.ts';
 import { Button } from '../Button.tsx';
 import { Select } from './Select.tsx';
-import { ButtonLoader } from './ButtonLoader.tsx';
+import { ButtonLoader } from '../ButtonLoader.tsx';
 
 interface IFormProps {
   title: string;
@@ -72,12 +72,12 @@ export function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFor
         <Select<Category>
           options={categoryOptions}
           selected={category}
-          fieldStyles={FIELD_STYLES}
+          fieldStyles={clsx('h-[40px]', FIELD_STYLES)}
           onChange={handleChangeCategory}
         />
         {error && <p className="text-sm text-rose-500 dark:text-red-500">{error}</p>}
         <Button type="submit" disabled={isDisabled}>
-          <ButtonLoader isLoading={isLoading} />
+          <ButtonLoader title="Save" isLoading={isLoading} />
         </Button>
       </form>
     </div>

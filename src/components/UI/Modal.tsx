@@ -1,6 +1,7 @@
 import { JSX, PropsWithChildren, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
-interface IModalProps extends PropsWithChildren {
+export interface IModalProps extends PropsWithChildren {
   isShow: boolean;
   onClose: () => void;
 }
@@ -18,7 +19,7 @@ export function Modal({ isShow, children, onClose }: IModalProps): JSX.Element |
     return null;
   }
 
-  return (
+  return createPortal(
     <>
       <div
         className="fixed left-0 right-0 top-0 bottom-0 z-[3] bg-gray-950 bg-opacity-80 backdrop:bg-gray-50"
@@ -27,6 +28,7 @@ export function Modal({ isShow, children, onClose }: IModalProps): JSX.Element |
         <button className="absolute top-4 right-4 text-xl font-bold text-gray-200">╳</button>
       </div>
       {children}
-    </>
+    </>,
+    document.getElementById('root')!,
   );
 }
