@@ -5,6 +5,7 @@ import { useAddNote } from '../../hooks/useAddNote.ts';
 import { useEditNote } from '../../hooks/useEditNote.ts';
 import { useSelectedCategories } from '../../hooks/useSelectCategories.ts';
 import { useSearch } from '../../hooks/useSearch.ts';
+import { useActualNotes } from '../../hooks/useActualNotes.ts';
 import { useFilterNotes } from '../../hooks/useFilterNotes.ts';
 import { INote } from '../../types/note.ts';
 import { TFormData } from '../../types/form.ts';
@@ -17,16 +18,14 @@ import { NotesControls } from './NotesControls.tsx';
 import { NotFoundNotes } from './NotFoundNotes.tsx';
 
 function Notes(): JSX.Element {
-  const { notes, isLoading } = useContext(NotesContext);
+  const { isLoading } = useContext(NotesContext);
   const [selectedCategories, handleChangeCategories, resetSelectedCategories] = useSelectedCategories();
   const [searchValue, handleSearch] = useSearch();
   const [isAddModalShow, setAddModalShow] = useState<boolean>(false);
   const addNote = useAddNote(1000);
   const editNote = useEditNote(1000);
   const [editedNoteData, setEditedNoteData] = useState<TFormData | null>(null);
-  const actualNotes: INote[] = useMemo(() => {
-    return notes.filter(({ isCompleted }) => !isCompleted);
-  }, [notes]);
+  const actualNotes = useActualNotes();
   const areActualNotes = useMemo(() => Boolean(actualNotes.length), [actualNotes.length]);
   const filteredNotes = useFilterNotes(actualNotes, selectedCategories, searchValue);
 
