@@ -9,7 +9,7 @@ export function NotesSubheading({ areNoNotes }: { areNoNotes: boolean }): JSX.El
     <Subheading className="mb-6">
       {areNoNotes ? (
         <>
-          <span>You don't have active notes...</span> <br />{' '}
+          <span>You don't have actual notes...</span> <br />{' '}
           <span className="text-sm">
             But you can add some on the{' '}
             <NavLink to={PageUrn.Home} className="underline underline-offset-2 hover:no-underline">
@@ -18,7 +18,7 @@ export function NotesSubheading({ areNoNotes }: { areNoNotes: boolean }): JSX.El
           </span>
         </>
       ) : (
-        'Here is a list of your active notes'
+        'Here is a list of your actual notes'
       )}
     </Subheading>
   );

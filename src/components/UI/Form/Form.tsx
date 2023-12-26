@@ -38,8 +38,8 @@ export function Form({ title, formData, isLoading, onSubmit, afterSubmit }: IFor
   }, [isNameError, isTextError]);
 
   const isDisabled: boolean = useMemo(() => {
-    return Boolean(error) || isLoading;
-  }, [error, isLoading]);
+    return Boolean(error) || isLoading || !(name && text);
+  }, [error, isLoading, name, text]);
 
   function handleChangeCategory(category: Category): void {
     setCategory(category);

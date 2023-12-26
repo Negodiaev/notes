@@ -50,7 +50,7 @@ function Notes(): JSX.Element {
   return (
     <>
       <div className="container py-8 min-h-full">
-        <Heading>All notes</Heading>
+        <Heading>Actual notes</Heading>
         <NotesSubheading areNoNotes={!actualNotes.length} />
         <div className="flex flex-col gap-2">
           {areActualNotes && (
